@@ -1,0 +1,220 @@
+SACCO Management App Documentation
+Overview
+The SACCO Management App is a desktop application designed to help Savings and Credit Cooperative Organizations (SACCOs) manage their operations efficiently. It provides functionalities such as member registration, loan management, savings tracking, and reporting.
+
+Features
+Dashboard: View summaries of key metrics such as total clients, total loans, total savings, and cash in circulation.
+
+Clients:
+
+Register new members.
+
+View and edit member details.
+
+Loans:
+
+Apply for loans.
+
+View loan details (disbursed, pending, and arrears).
+
+Savings: Track member savings.
+
+Institution: Manage staff and requisitions.
+
+Accounting: Handle financial transactions and accounting.
+
+Reports: Generate and export reports (clients, savings, funds/expenditure).
+
+Admin: Manage employees and view applications.
+
+Settings: Customize app appearance and language.
+
+Prerequisites
+Before running the app, ensure you have the following installed:
+
+Python 3.8 or higher: Download and install Python from python.org.
+
+MySQL Server: Install MySQL Server and MySQL Workbench from MySQL.
+
+Required Python Libraries:
+
+customtkinter
+
+mysql-connector-python
+
+matplotlib
+
+pandas (for exporting reports)
+
+Install the required libraries using pip:
+
+bash
+Copy
+pip install customtkinter mysql-connector-python matplotlib pandas
+Setup Instructions
+1. Database Setup
+Open MySQL Workbench and create a new database named sacco_db.
+
+Run the following SQL queries to create the required tables:
+
+sql
+Copy
+CREATE TABLE IF NOT EXISTS members (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    id_number VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    balance DECIMAL(10, 2) DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS loans (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    member_id INT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    interest_rate DECIMAL(5, 2) NOT NULL,
+    status VARCHAR(50) DEFAULT 'Pending',
+    FOREIGN KEY (member_id) REFERENCES members (id)
+);
+
+CREATE TABLE IF NOT EXISTS staff (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    role VARCHAR(255) NOT NULL
+);
+2. Configure Database Connection
+Update the db_config dictionary in the script with your MySQL credentials:
+
+python
+Copy
+db_config = {
+    "host": "localhost",
+    "user": "root",  # Replace with your MySQL username
+    "password": "",  # Replace with your MySQL password
+    "database": "sacco_db"  # Replace with your database name
+}
+Running the App
+Clone or download the project repository.
+
+Navigate to the project directory:
+
+bash
+Copy
+cd path/to/project
+Run the script:
+
+bash
+Copy
+python script1.py
+Usage Guide
+Dashboard
+Displays summaries of key metrics:
+
+Total clients
+
+Total loans and loan amount
+
+Total savings
+
+Total cash in circulation
+
+Includes a pie chart showing disbursed vs collected loans.
+
+Clients
+Create Client:
+
+Enter member details (name, ID number, phone, email).
+
+Click "Create Client" to register a new member.
+
+View Clients:
+
+Displays a list of all registered members.
+
+Click "Refresh List" to update the list.
+
+Loans
+Apply for Loan:
+
+Enter member ID, loan amount, and interest rate.
+
+Click "Apply for Loan" to submit the application.
+
+View Loans:
+
+Displays a list of all loans.
+
+Click "Refresh List" to update the list.
+
+Savings
+(To be implemented) Track member savings.
+
+Institution
+(To be implemented) Manage staff and requisitions.
+
+Accounting
+(To be implemented) Handle financial transactions.
+
+Reports
+(To be implemented) Generate and export reports (clients, savings, funds/expenditure).
+
+Admin
+(To be implemented) Manage employees and view applications.
+
+Settings
+(To be implemented) Customize app appearance and language.
+
+Exporting Reports
+To export reports (e.g., client list, loan details) to Excel or CSV, use the pandas library. Example:
+
+python
+Copy
+import pandas as pd
+
+# Fetch data from the database
+cursor.execute("SELECT * FROM members")
+members = cursor.fetchall()
+
+# Convert to a DataFrame
+df = pd.DataFrame(members, columns=["ID", "Name", "ID Number", "Phone", "Email", "Balance"])
+
+# Export to Excel
+df.to_excel("members_report.xlsx", index=False)
+
+# Export to CSV
+df.to_csv("members_report.csv", index=False)
+Troubleshooting
+Database Connection Issues:
+
+Ensure MySQL Server is running.
+
+Verify the database credentials in db_config.
+
+NaN Values in Pie Chart:
+
+Ensure there is valid loan data in the database.
+
+Missing Libraries:
+
+Install missing libraries using pip install <library_name>.
+
+Contributing
+Contributions are welcome! Follow these steps:
+
+Fork the repository.
+
+Create a new branch for your feature or bugfix.
+
+Commit your changes.
+
+Submit a pull request.
+
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+Contact
+For questions or support, contact:
+
+Email: igaisaaceb@gmail.com
+
+GitHub: Your GitHub Profile
